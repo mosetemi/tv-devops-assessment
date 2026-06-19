@@ -1,5 +1,5 @@
-resource "ecr_repository" "app" {
-    name                = "${var.local.name_prefix}-repo"
+resource "aws_ecr_repository" "app" {
+    name                = "${local.name_prefix}-repo"
     image_tag_mutability = "MUTABLE"
 
     image_scanning_configuration {
@@ -7,12 +7,12 @@ resource "ecr_repository" "app" {
     }
 
     tags = merge(local.standard_tags, {
-        Name = "${var.local.name_prefix}-repo"
+        Name = "${local.name_prefix}-repo"
     })
 }
 
 resource "aws_ecr_lifecycle_policy" "app" {
-    repository = ecr_repository.app.name
+    repository = aws_ecr_repository.app.name
 
     policy = jsonencode({
         rules = [
