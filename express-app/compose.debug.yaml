@@ -1,6 +1,6 @@
 services:
-  expresstsapp:
-    image: expresstsapp
+  express-ts-app:
+    image: express-ts-app
     build:
       context: .
       dockerfile: ./Dockerfile
