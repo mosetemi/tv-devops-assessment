@@ -28,30 +28,30 @@ resource "aws_subnet" "public" {
   })
 }
 
-resource "aws_security_group" "ecs"{
-    name        = "${local.name_prefix}-ecs-sg"
-    description = "Security group for ECS Fargate tasks"
-    vpc_id      = aws_vpc.main.id
-    
-    ingress {
-        description = "Allow inbound traffic to the container port"
-        from_port   = var.container_port
-        to_port     = var.container_port
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+resource "aws_security_group" "ecs" {
+  name        = "${local.name_prefix}-ecs-sg"
+  description = "Security group for ECS Fargate tasks"
+  vpc_id      = aws_vpc.main.id
 
-    egress {
-        description = "Allow all outbound traffic"
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+  ingress {
+    description = "Allow inbound traffic to the container port"
+    from_port   = var.container_port
+    to_port     = var.container_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-    tags = merge(local.standard_tags, {
-        Name = "${local.name_prefix}-ecs-sg"
-    })
+  egress {
+    description = "Allow all outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = merge(local.standard_tags, {
+    Name = "${local.name_prefix}-ecs-sg"
+  })
 }
 
 resource "aws_internet_gateway" "main" {
