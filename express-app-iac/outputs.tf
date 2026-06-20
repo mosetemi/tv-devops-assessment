@@ -14,3 +14,8 @@ output "ecs_service_name" {
 output "vpc_id" {
   value = aws_vpc.main.id
 }
+
+output "alb_dns_name" {
+  description = "Public URL of the ALB"
+  value       = aws_lb.main.dns_name
+}

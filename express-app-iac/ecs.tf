@@ -2,11 +2,11 @@ resource "aws_ecs_cluster" "main" {
   name = "${local.name_prefix}-cluster"
 
   setting {
-  name = "containerInsights"
-  value = "enabled"
-}
+    name  = "containerInsights"
+    value = "enabled"
+  }
 
-tags = merge(local.standard_tags, {
+  tags = merge(local.standard_tags, {
     Name = "${local.name_prefix}-cluster"
   })
 }
@@ -67,11 +67,19 @@ resource "aws_ecs_service" "app" {
   desired_count   = var.desired_count
   launch_type     = "FARGATE"
 
+  load_balancer {
+    target_group_arn = aws_lb_target_group.app.arn
+    container_name   = "${local.name_prefix}-app"
+    container_port   = var.container_port
+  }
+
   network_configuration {
     subnets          = aws_subnet.public[*].id
-    security_groups  = [aws_security_group.ecs.id]
-    assign_public_ip = true
+    security_groups  = [aws_security_group.ecs.id, aws_security_group.alb.id]
+    assign_public_ip = false
   }
+
+  depends_on = [aws_lb_listener.http]
 
   tags = merge(local.standard_tags, { Name = "${local.name_prefix}-service" })
 }
