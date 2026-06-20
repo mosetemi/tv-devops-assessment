@@ -13,14 +13,19 @@ resource "aws_lb_target_group" "app" {
   port     = var.container_port
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
+  target_type = "ip"
 
   health_check {
-    path                = "/"
+    path                = "/health"
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
     unhealthy_threshold = 3
     matcher             = "200"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 
   tags = merge(local.standard_tags, { Name = "${local.name_prefix}-tg" })

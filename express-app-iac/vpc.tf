@@ -38,7 +38,7 @@ resource "aws_security_group" "ecs" {
     from_port   = var.container_port
     to_port     = var.container_port
     protocol    = "tcp"
-    cidr_blocks = ["aws_security_group.alb.id"]
+    security_groups = [aws_security_group.alb.id]
   }
 
   egress {
