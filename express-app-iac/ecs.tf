@@ -75,8 +75,8 @@ resource "aws_ecs_service" "app" {
 
   network_configuration {
     subnets          = aws_subnet.public[*].id
-    security_groups  = [aws_security_group.ecs.id, aws_security_group.alb.id]
-    assign_public_ip = false
+    security_groups  = [aws_security_group.ecs.id]
+    assign_public_ip = true
   }
 
   depends_on = [aws_lb_listener.http]
