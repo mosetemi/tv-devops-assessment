@@ -1,3 +1,4 @@
+# Variables
 variable "aws_account_id" {
   description = "The AWS account ID to deploy resources into. This is used to restrict the provider to a specific account."
   type        = string
