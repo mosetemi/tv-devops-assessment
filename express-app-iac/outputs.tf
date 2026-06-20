@@ -1,3 +1,4 @@
+# Output values for ECR repository URL, ECS cluster & service names, VPC ID, and ALB DNS name.
 output "ecr_repository_url" {
   description = "ECR repository URL to push built images to"
   value       = aws_ecr_repository.app.repository_url

@@ -1,4 +1,5 @@
-# Create a VPC
+# VPC and network resources. The VPC is configured with DNS support and hostnames enabled, and the subnets are public with auto-assigned public IPs.
+# An internet gateway is attached to the VPC, and a route table is created to allow outbound internet access from the public subnets.
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_support   = true
@@ -15,7 +16,7 @@ resource "aws_vpc" "main" {
 data "aws_availability_zones" "available" {
   state = "available"
 }
-
+# Subnets defined for the VPC: two public subnets in different availability zones for high availability
 resource "aws_subnet" "public" {
   count                   = 2
   vpc_id                  = aws_vpc.main.id
@@ -27,7 +28,7 @@ resource "aws_subnet" "public" {
     Name = "${local.name_prefix}-public-subnet-${count.index + 1}"
   })
 }
-
+# Security groups defined for both ECS tasks and the ALB to allow necessary traffic. 
 resource "aws_security_group" "ecs" {
   name        = "${local.name_prefix}-ecs-sg"
   description = "Security group for ECS Fargate tasks"
@@ -54,6 +55,7 @@ resource "aws_security_group" "ecs" {
   })
 }
 
+# Internet gateway for the VPC to allow outbound internet access from the public subnets.
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
@@ -62,6 +64,7 @@ resource "aws_internet_gateway" "main" {
   })
 }
 
+# Route table with a default route to the internet gateway and routing the public subnets for internet connectivity.
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
