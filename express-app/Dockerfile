@@ -6,6 +6,7 @@ COPY package.json package-lock.json* ./
 RUN npm ci --silent
 COPY src ./src
 COPY tsconfig.json ./
+
 RUN npm run build
 
 # Prod stage

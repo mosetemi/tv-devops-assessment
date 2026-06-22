@@ -51,11 +51,11 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory: ./iac
+        working-directory: ./express-app-iac
         run: terraform init
-
+        
       - name: Terraform Apply
-        working-directory: ./iac
+        working-directory: ./express-app-iac
         env:
           TF_VAR_aws_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
           TF_VAR_aws_region: ${{ vars.AWS_REGION }}
