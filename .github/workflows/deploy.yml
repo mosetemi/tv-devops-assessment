@@ -54,7 +54,6 @@ jobs:
         working-directory: ./express-app-iac
         run: terraform init
         
-
       - name: Terraform Apply
         working-directory: ./express-app-iac
         env:
