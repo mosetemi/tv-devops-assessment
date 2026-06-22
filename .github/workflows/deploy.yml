@@ -26,6 +26,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: ./iac
+        run: terraform init
+
       - name: Login to Amazon ECR
         id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
@@ -46,13 +53,6 @@ jobs:
           repository: mosetemi/tv-devops-assessment
           path: iac
           token: ${{ secrets.IAC_REPO_TOKEN }}
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-
-      - name: Terraform Init
-        working-directory: ./iac
-        run: terraform init
 
       - name: Terraform Apply
         working-directory: ./iac
