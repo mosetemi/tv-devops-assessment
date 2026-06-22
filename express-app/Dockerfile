@@ -3,9 +3,13 @@
 FROM node:lts-alpine AS build
 WORKDIR /usr/src/app
 COPY package.json package-lock.json* ./
-RUN npm ci --silent
+RUN npm ci
 COPY src ./src
 COPY tsconfig.json ./
+
+RUN echo "Files available inside Docker:"
+RUN find . -maxdepth 4 -type f | sort
+
 RUN npm run build
 
 # Prod stage
