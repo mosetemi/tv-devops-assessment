@@ -53,6 +53,7 @@ jobs:
       - name: Terraform Init
         working-directory: ./iac
         run: terraform init
+        
 
       - name: Terraform Apply
         working-directory: ./iac
